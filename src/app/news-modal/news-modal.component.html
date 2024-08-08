@@ -1,0 +1,66 @@
+<!-- stock-trade.component.html -->
+<!-- Add this div where you want the success message to appear -->
+<div *ngIf="showSuccessMessage" class="alert alert-success" role="alert">
+    AAPL bought successfully.
+  </div>
+  
+  <!-- Your existing buttons and modals -->
+  
+<div>
+  <button type="button" class="btn btn-success" (click)="openModal(buyTemplate)">Buy</button>
+  <button type="button" class="btn btn-danger" (click)="openModal(sellTemplate)">Sell</button>
+
+  <ng-template #buyTemplate>
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Buy Stocks</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Current Price: {{ currentPrice }}</p>
+                  <p>Money in Wallet: {{ moneyInWallet }}</p>
+                  <div class="mb-3">
+                      <label for="quantityBuy" class="form-label">Quantity:</label>
+                      <input type="number" class="form-control" id="quantityBuy" [(ngModel)]="quantityBuy">
+                      <div *ngIf="!enoughMoney" class="text-danger">Not enough money to buy!</div>
+                  </div>
+                  <p>Total: {{ calculateTotalBuy() }}</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+                  <button type="button" class="btn btn-primary" (click)="buyStocks()">Buy</button>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+
+  <ng-template #sellTemplate>
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Sell Stocks</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Current Price: {{ currentPrice }}</p>
+                  <p>Quantity Owned: {{ quantityOwned }}</p>
+                  <div class="mb-3">
+                      <label for="quantitySell" class="form-label">Quantity:</label>
+                      <input type="number" class="form-control" id="quantitySell" [(ngModel)]="quantitySell">
+                      <div *ngIf="!enoughStocks" class="text-danger">Not enough stocks to sell!</div>
+                  </div>
+                  <p>Total: {{ calculateTotalSell() }}</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+                  <button type="button" class="btn btn-primary" (click)="sellStocks()">Sell</button>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</div>

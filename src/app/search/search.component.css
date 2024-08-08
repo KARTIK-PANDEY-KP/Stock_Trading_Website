@@ -1,0 +1,83 @@
+.custom-blue {
+  background-color: #0c1b70;
+}
+
+.text-muted {
+  color: #bebebe !important;
+}
+
+.custom-blue .navbar-brand:hover,
+.custom-blue .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.active {
+  border: 1px solid #FFFFFF;
+  border-radius: 15px;
+  padding: 5px 10px;
+}
+
+.text_body {
+  font-size: 35px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.input-group {
+  max-width: 450px; /* Set a maximum width for the input group */
+
+  width: 100%; /* Full width for both mobile and PC */
+  margin: 40px auto; /* Center the input group vertically */
+}
+
+.input-group-text {
+  background: transparent;
+  border: none;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.input-group .form-control {
+  padding-right: 70px;
+  border: 2px solid blue;
+  border-radius: 20px !important;
+}
+
+.bi {
+  color: blue;
+  margin: 0 5px;
+  pointer-events: auto;
+}
+
+.form-control:focus {
+  border-color: blue;
+  box-shadow: none;
+}
+
+.clear-button,
+.search_button {
+  background: transparent;
+  color: blue;
+  border: none;
+}
+
+.custom-toggler {
+  border-color: white;
+}
+
+.card-img-top {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.card {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+} 

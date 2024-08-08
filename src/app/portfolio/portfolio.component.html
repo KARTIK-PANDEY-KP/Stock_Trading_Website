@@ -1,0 +1,181 @@
+<nav class="navbar navbar-expand-lg custom-blue">
+    <div class="container-fluid navbar-dark">
+        <span class="navbar-brand text-white navbar-dark" href="#">Stock Search</span>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon navbar-dark"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item me-3">
+                <a class="nav-link text-white" routerLink="/search/home">Search</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link text-white" routerLink="/watchlist">Watchlist</a>
+            </li>
+            <li class="nav-item me-5">
+                <a class="nav-link text-white active" routerLink="/portfolio">Portfolio</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
+    
+    <div *ngIf="this.showbuySuccessMessage" class="alert alert-success alert-dismissible fade show mt-4" role="alert" style="max-width: 600px; margin: auto;">
+        {{this.ticker}} bought successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+      </div>
+      <div *ngIf="this.showsellSuccessMessage" class="alert alert-danger alert-dismissible fade show mt-4" role="alert" style="max-width: 600px; margin: auto;">
+        {{this.ticker}} sold successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+      </div>
+    
+      <div class="container mt-4">
+        <h1>My Portfolio</h1>          
+        <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mt-6">
+              <span class="sr-only">                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+              </span>
+          </div>
+          <div *ngIf="!isLoading">
+            
+
+        <h5>Money in Wallet: {{ moneyInWallet }}</h5>
+    </div>
+    <div *ngIf="portfolioNotFound" class="alert alert-warning rounded text-center" role="alert">
+      Currently, you don't have any stock.
+    </div>
+    <!-- Here you would include other elements to show portfolio details if found -->
+
+    <div class="container">
+        <div *ngFor="let stock of stocks" class="card m-0 p-0 mb-3">
+            <ul class="list-group list-group-flush border w-100">
+                <li class="list-group-item bg-light d-flex align-items-center">
+                    <h2>{{ stock.stock_ticker }}</h2> &nbsp;&nbsp;{{ stock.stock_company_name }}
+                </li>
+                <li class="list-group-item">
+                    <div class="table-responsive">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Quantity:</td>
+                                    <td>{{ stock.quantity_owned }}</td>
+                                    <td>Change:</td>
+                                    <td [class.text-red]="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" 
+                                [class.text-green]="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0">
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0" class="bi bi-caret-up-fill text-success"></i>
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" class="bi bi-caret-down-fill text-danger"></i>
+                        
+                                {{ stock.currentPrice - stock.stock_avg_price_per_share }}
+                            </td>
+                                </tr>
+                                <tr>
+                                    <td>Avg. Cost/Share:</td>
+                                    <td>{{ stock.stock_avg_price_per_share }}</td>
+                                    <td>Current Price:</td>
+                                    <td [class.text-red]="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" 
+                                [class.text-green]="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0">
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0" class="bi bi-caret-up-fill text-success"></i>
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" class="bi bi-caret-down-fill text-danger"></i>
+                        
+                                {{ stock.currentPrice }}
+                                </tr>
+                                <tr>
+                                    <td>Total Cost:</td>
+                                    <td>{{ stock.quantity_owned * stock.stock_avg_price_per_share }}</td>
+                                    <td>Market Value:</td>
+                                    <td [class.text-red]="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" 
+                                [class.text-green]="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0">
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) >= 0" class="bi bi-caret-up-fill text-success"></i>
+                                <i *ngIf="(stock.currentPrice - stock.stock_avg_price_per_share) < 0" class="bi bi-caret-down-fill text-danger"></i>
+                        
+                                {{ stock.quantity_owned * stock.currentPrice }}
+                            </td>
+                                </tr>
+                           </tbody>
+                        </table>
+                    </div>
+                </li>
+                <li class="list-group-item bg-light">
+                    <div>
+                        <button type="button" class="btn btn-primary me-4 float-left" (click)="openModal(buyTemplate)">Buy</button>
+                        <button type="button" class="btn btn-danger float-left" (click)="openModal(sellTemplate)">Sell</button>
+                      
+                        <ng-template #buyTemplate>
+                            <div class="" role="document">
+                                <div class="">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{ stock.stock_company_name }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Current Price: {{ stock.currentPrice }}</p>
+                                        <p>Money in Wallet: {{ moneyInWallet }}</p>
+                                        <div class="mb-3">
+                                          <div class="mb-3 d-flex align-items-center">
+                                            <label for="quantityBuy" class="form-label mr-4">Quantity:</label>
+                                            <input type="number" class="form-control" id="quantityBuy" [(ngModel)]="quantityBuy">
+                                        </div>
+                                            <div *ngIf="!enoughMoney" class="text-danger">Not enough money to buy!</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <p>Total: {{ this.calculateTotalBuy() }}</p>
+                                      <button type="button" class="btn btn-primary float-end" (click)="this.buyStocks()">Buy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                      
+                        <ng-template #sellTemplate>
+                            <div class="" role="document">
+                                <div class="">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{ stock.stock_company_name }}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Current Price: {{ stock.currentPrice }}</p>
+                                        <p>Money in Wallet: {{ moneyInWallet }}</p>
+                                        <div class="mb-3">
+                                          <div class="mb-3 d-flex align-items-center">
+                                            <label for="quantitySell" class="form-label mr-4">Quantity:</label>
+                                            <input type="number" class="form-control" id="quantitySell" [(ngModel)]="quantitySell">
+                                          </div>
+                                            <div *ngIf="!enoughStocks" class="text-danger">Not enough stocks to sell!</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <p>Total: {{ this.calculateTotalSell() }}</p>
+                                        <button type="button" class="btn btn-primary float-end" (click)="this.sellStocks()">Sell</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                      </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    
+  <!-- Footer-->
+  <!-- Remove the container if you want to extend the Footer to full width. -->
+  <!-- Footer -->
+  <footer
+  class="footer mt-auto clear-top fixed-bottom"
+  style="background-color: rgba(0, 0, 0, 0.2)"
+>
+  <div class="text-center p-3">
+    Powered by
+    <a href="https://finnhub.io/">Finnhub.io</a>
+  </div>
+</footer>
+
+      <!-- Footer -->
+  <!-- End of .container -->
+  <!-- Footer end -->
+  <!-- Bootstrap Bundle with Popper (Replace the version with the specific one you are using, if necessary) -->

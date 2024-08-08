@@ -1,0 +1,155 @@
+/* You can add global styles to this file, and also import other style files */
+.custom-blue {
+    background-color: #0c1b70; /* You can change this hex value to any shade of blue you prefer */
+  }
+  
+  .text-muted {
+    color: #bebebe !important; /* Replace #grey with whatever color you want */
+  }
+  
+  .custom-blue .navbar-brand:hover,
+  .custom-blue .nav-link:hover {
+    color: #ffffff !important; /* Changes the text color to white on hover */
+  }
+  
+  .active{
+    border: 1px solid #FFFFFF; /* White border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 5px 10px; /* Padding inside the border */
+  }
+  .text_body
+  {
+      font-size: 35px;
+      font-family: 'Open Sans', sans-serif;
+  }
+  .input-group {
+    flex-wrap: nowrap; /* Prevent wrapping of elements */
+    width: 50%; /* Halve the width of the input group */
+    margin: 0 auto; /* Center the input group horizontally */
+  }
+  .input-group-text {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+  .input-group .form-control {
+    padding-right: 70px; /* Adjust padding to prevent text overlap */
+    border: 2px solid blue; /* Make border blue and thicker */
+    border-radius: 20px !important; /* Make the border rounder */
+  }
+  .bi {
+    color: blue;
+    margin: 0 5px;
+    pointer-events: auto; /* Make icons clickable */
+  }
+  .form-control:focus {
+    border-color: blue; /* Keep the border color on focus */
+    box-shadow: none;
+  }
+  .clear-button, .search_button {
+    background: transparent;
+    color: blue;
+    border: none;
+  }
+  .custom-toggler {
+    border-color: white;
+  }
+  .card-img-top {
+    width: 120px; /* You can adjust as needed */
+    height: auto;
+    margin-bottom: 10px; /* Spacing between image and text */
+  }
+  .card {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+  }
+  
+  .stock-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px; /* Add space between items */
+}
+
+
+.stock-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.stock-remove {
+  margin-right: 0px;
+}
+
+.btn-remove {
+  font-size: 24px;
+  color: #000;
+  background: none;
+  border: none;
+}
+
+.stock-info {
+  flex-grow: 0;
+}
+
+.ticker {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.company-name {
+  font-size: 14px;
+}
+
+.stock-price {
+  text-align: right;
+}
+
+.current-price {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.price-change {
+  font-size: 14px;
+}
+
+.positive {
+  color: #4CAF50;
+}
+
+.negative {
+  color: #F44336;
+}
+
+.price-up::before {
+  content: '▲';
+  color: #4CAF50;
+}
+
+.price-down::before {
+  content: '▼';
+  color: #F44336;
+}
+
+.empty-watchlist-message {
+  background-color: #ffffcc; /* The light yellow background as seen in the image */
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+  /* Bootstrap rounded corners */
+  border-radius: 0.25rem; /* This is typically the default for Bootstrap's .rounded class */
+}

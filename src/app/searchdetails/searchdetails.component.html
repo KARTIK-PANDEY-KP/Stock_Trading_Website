@@ -1,0 +1,373 @@
+<nav class="navbar navbar-expand-lg custom-blue">
+    <div class="container-fluid navbar-dark">
+        <span class="navbar-brand text-white navbar-dark" href="#">Stock Search</span>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item me-3">
+                    <a class="nav-link text-white active" routerLink="/search/home">Search</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white" routerLink="/watchlist">Watchlist</a>
+                </li>
+                <li class="nav-item me-5">
+                    <a class="nav-link text-white" routerLink="/portfolio">Portfolio</a>
+                </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
+    <div class = "static_data">
+        <div class="text col text-center mx-auto mt-5">
+            <p class="text_body fs-1">STOCK SEARCH</p>
+        </div>
+    <!-- TODO: bootstrap form -->
+  <div class="container mt-5">
+      <div class="position-relative">
+          <form action="/submit/"  name="form" class="form_1" method="get" (ngSubmit)="onSubmit($event)">
+          <div class="input-group">
+              <input type="text" name="text" class="form-control" placeholder="Enter stock ticker symbol" aria-label="Stock ticker" id="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto" required>
+              <mat-autocomplete class = "autocomp" #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                <mat-option *ngIf="isLoading">
+                <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                </mat-option>
+                @for (option of filteredOptions | async; track option) {
+                  <mat-option [value]="option"  *ngIf="!isLoading && stop">{{option}}</mat-option>
+                }
+              </mat-autocomplete>
+              <span class="input-group-text">
+              <button type="submit" class="bi search_button bi-search"></button>
+              <button type="reset" (click)="resetAutocomplete()" class="bi bi-x-lg clear-button cancel"></button>
+              </span>
+          </div>
+          </form>
+      </div>
+  </div>
+  <div *ngIf="isLoading2" class="d-flex justify-content-center align-items-center mt-6">
+    <span class="sr-only">                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+    </span>
+</div>
+<div *ngIf="!isLoading2">
+    <!-- -------------------- TODO:[innerHTML]="dynamicContent"  -->
+  </div>
+  <!-- all the changes-->
+  <div class="dynamic_div">
+    <div *ngIf="this.showbuySuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+      {{this.ticker}} bought successfully.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+    </div>
+    <div *ngIf="this.showsellSuccessMessage" class="alert alert-danger alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+      {{this.ticker}} sold successfully.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+    </div>
+
+    <div *ngIf="this.watchlistalert_add" class="alert alert-success alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+      {{this.ticker}} added to Watchlist.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+    </div>
+    <div *ngIf="this.watchlistalert_remove" class="alert alert-danger alert-dismissible fade show" role="alert" style="max-width: 600px; margin: auto;">
+      {{this.ticker}} removed from the  Watchlist.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="clearAlert()"></button>
+    </div>
+
+    <div *ngIf="contentrender" class="container my-5">
+      <div class="d-flex flex-row flex-nowrap">
+        <!-- First Card -->
+        <div class="flex-grow-1 flex-shrink-1">
+          <div class="card text-center border-0">
+            <div class="card-body">
+              <h5 class="card-title h1">
+                {{this.generalinfo.ticker}}
+                <i id="star-icon" class="bi bi-star fs-4" style="cursor: pointer; color: black;" (click)="toggleStar($event)">
+                </i>
+              </h5>
+              <p class="card-text h4">{{this.generalinfo.name}}</p>
+              <p class="card-text"><small class="">{{this.generalinfo.exchange}}</small></p>
+                <div class="row single-line-text">
+                  <div class="col">
+                    <!-- stock-trade.component.html -->
+<div>
+  <button type="button" class="btn btn-success me-3" (click)="openModal(buyTemplate)">Buy</button>
+  <button type="button" class="btn btn-danger" (click)="openModal(sellTemplate)">Sell</button>
+
+  <ng-template #buyTemplate>
+      <div class="" role="document">
+          <div class="">
+              <div class="modal-header">
+                  <h5 class="modal-title">{{this.generalinfo.name}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Current Price: {{ this.currentPrice }}</p>
+                  <p>Money in Wallet: {{ this.moneyInWallet }}</p>
+                  <div class="mb-3">
+                    <div class="mb-3 d-flex align-items-center">
+                      <label for="quantityBuy" class="form-label mr-4">Quantity:</label>
+                      <input type="number" class="form-control" id="quantityBuy" [(ngModel)]="quantityBuy">
+                  </div>
+                      <div *ngIf="!enoughMoney" class="text-danger">Not enough money to buy!</div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <p>Total: {{ this.calculateTotalBuy() }}</p>
+                <button type="button" class="btn btn-primary float-end" (click)="this.buyStocks()">Buy</button>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+
+  <ng-template #sellTemplate>
+      <div class="" role="document">
+          <div class="">
+              <div class="modal-header">
+                  <h5 class="modal-title">{{this.generalinfo.name}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Current Price: {{ this.currentPrice }}</p>
+                  <p>Money in Wallet: {{ this.moneyInWallet }}</p>
+                  <div class="mb-3">
+                    <div class="mb-3 d-flex align-items-center">
+                      <label for="quantitySell" class="form-label mr-4">Quantity:</label>
+                      <input type="number" class="form-control" id="quantitySell" [(ngModel)]="quantitySell">
+                    </div>
+                      <div *ngIf="!enoughStocks" class="text-danger">Not enough stocks to sell!</div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <p>Total: {{ this.calculateTotalSell() }}</p>
+                  <button type="button" class="btn btn-primary float-end" (click)="this.sellStocks()">Sell</button>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</div>
+
+                  </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <!-- Second Card -->
+        <div class="flex-grow-1 flex-shrink-1">
+          <div class="card border-0">
+            <img *ngIf="safeLogoUrl" [src]="safeLogoUrl" class="card-img-top" alt="Apple Logo" style="max-width: 100px; margin: auto;">
+            <div class="card-body mt-1">
+              <p class="card-text text-center" [ngClass]="{'text-success': market_status === 1, 'text-danger': market_status !== 1}">
+                <small class="h6">Market is {{ market_status === 0 ? 'Closed on ' : 'Open'}} {{ market_status === 0 ? formatUnixTimestamp(this.quote.t ) : ''}}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Third Card -->
+        <div class="flex-grow-1 flex-shrink-1">
+          <div class="card text-center border-0">
+            <div class="card-body">
+              <h5 class="card-title h1" [ngClass]="{'text-success': stock_status === 1, 'text-danger': stock_status === 0}">
+                {{ this.quote.c }}
+              </h5>
+              <p class="card-text h4" [ngClass]="{'text-success': stock_status === 1, 'text-danger': stock_status === 0}">
+                <i *ngIf="stock_status === 1" class="bi bi-caret-up-fill text-success fs-6"></i>
+                <i *ngIf="stock_status === 0" class="bi bi-caret-down-fill text-danger fs-6"></i>{{ this.quote.d }} ({{ this.quote.dp }}%)
+
+              </p>
+              <p class="card-text"><small class="">{{getCurrentDetails() }}</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+          <!-- MATERIAL TABBS -->
+          <mat-tab-group mat-stretch-tabs>
+                <mat-tab label="Summary">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-md-6 text-center">
+                        <div class = "col-md-6 col-xs-12 text-md-left text-center mt-4">
+                        <p class = "mb-0"><strong>High Price:</strong>{{this.quote.h}}</p>
+                        <p class = "mb-0"><strong>Low Price:</strong>{{this.quote.l}}</p>
+                        <p class = "mb-0"><strong>Open Price:</strong>{{this.quote.o}}</p>
+                        <p class = "mb-0"><strong>Prev. Close:</strong>{{this.quote.pc}}</p>
+                        </div>
+                        <div class="text-center mt-5">
+                        <h5  class = "mb-5"><u>About the company</u></h5>
+                        <p class = "mb-1"><strong>IPO Start Date:</strong>{{this.generalinfo.ipo}}</p>
+                        <p class = "mb-1"><strong>Industry:</strong>{{this.generalinfo.finnhubIndustry}}</p>
+                        <p class = "mb-1"><strong>Webpage:</strong> <a *ngIf="safeLogoUrl2" [href]="safeLogoUrl2">{{this.generalinfo.weburl}}</a></p>
+                        <p class="mb-1">
+                          <a *ngFor="let peer of peers; let i = index" [routerLink]="['/search/', peer]">
+                            {{ peer }}<span *ngIf="i < peers.length - 1">, </span>
+                          </a>
+                        </p></div>
+                      </div>
+                      <div class="col-md-6">
+                        <!-- Here you can place your chart component -->
+                        <div [chart]="chart"></div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+              
+                <mat-tab label="Top News">
+                  <div class="container">
+                    <div class="row g-4">
+                      <div *ngFor="let item of newsItems" class="col-12 col-md-6" (click)="showModal(item)">
+                        <!-- Mobile only -->
+                        <div class="d-md-none text-center">
+                          <div class="news-item d-flex flex-column align-items-center border border-2 rounded-3 p-2 bg-light">
+                            <img [src]="item.image" alt="news image" class="news-image rounded-3 mb-2">
+                            <div class="news-text">{{ item.headline }}</div>
+                          </div>
+                        </div>
+                        <!-- Larger than mobile -->
+                        <div class="d-none d-md-flex flex-column flex-md-row align-items-start align-items-md-center border border-2 rounded-3 p-2 bg-light">
+                          <img [src]="item.image" alt="news image" class="news-image rounded-3 mb-2 mb-md-0 me-md-2">
+                          <div class="news-text">{{ item.headline }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                  
+                
+                  
+                  <!-- Modal code remains the same -->
+                
+                
+                
+            
+              <!-- Modal -->
+              <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true" #newsModal data-bs-backdrop="false" style="background-color: rgba(0, 0, 0, 0.5);">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <span><h5 class="modal-title" id="newsModalLabel"><span class="fs-2">{{ selectedNewsItem?.source }}</span></h5>
+                        <p class="text-secondary fs-6">{{ selectedNewsItem?.datetime * 1000 | date:'longDate' }}</p></span>
+                    
+            
+                        <button type="button" class="btn mb-2" data-bs-dismiss="modal" style="pointer-events: none; border: none;">
+                          <span style="pointer-events: auto;" (click)="closeModal()"><u class="text-primary">x</u></span>
+                      </button>
+                     </div>
+                    <div class="modal-body">
+                      <h5><span>{{ selectedNewsItem?.headline }}</span></h5>
+                        <span class=" fs-8">{{ truncateText(selectedNewsItem?.summary, 300) }}</span> <br>
+                      <span class="text-muted fs-8">For more details click &nbsp;<a [href]="selectedNewsItem?.url" target="_blank">here</a></span >
+                    </div>
+                    <div class="p-3" style="border: 1px solid #ccc; margin: 10px; border-radius: 5px;">
+                      <p>Share</p>
+                      <a class="twitter-share-button me-3" 
+                        href="https://twitter.com/intent/tweet?text={{encodeURIComponent(selectedNewsItem?.headline)}}%20{{selectedNewsItem?.url}}">
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="Tweet" style="width: 25px; height: 25px;">
+                      </a>
+
+                      <a href="https://www.facebook.com/sharer/sharer.php?u={{selectedNewsItem?.url}}" target="_blank">
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Share on Facebook" style="width: 30px; height: 30px;">
+                      </a>
+                  </div>
+                  
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Your top news content goes here -->
+            </mat-tab>
+            <mat-tab label="Charts">
+              <highcharts-chart 
+                [Highcharts]="Highcharts"
+                [options]="chartOptions"
+                style="height: 600px;
+                min-width: 310px; display: block;">
+                </highcharts-chart>
+              <!-- Your charts content goes here -->
+            </mat-tab>
+            <mat-tab label="Insights">
+              <div class="d-flex justify-content-center">
+                <div class="w-40"> <!-- Change this class to control the width -->
+                  <h1 class="text-center fs-3 mb-3 mt-2">Insider Sentiments</h1>
+                  <table class="table table-responsive text-center">
+                    <tbody>
+                      <tr>
+                      <th>{{this.generalinfo.name}}</th>
+                        <th>MSPR</th>
+                        <th>Change</th>
+                      </tr>
+                      <tr>
+                        <th scope="row">Total</th>
+                        <td>{{this.sentimentData.totalMspr}}</td>
+                        <td>{{this.sentimentData.totalChange}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Positive</th>
+                        <td>{{this.sentimentData.positiveMspr}}</td>
+                        <td>{{this.sentimentData.positiveChange}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Negative</th>
+                        <td>{{this.sentimentData.negativeMspr}}</td>
+                        <td>{{this.sentimentData.negativeChange}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-6">
+                    <highcharts-chart
+                      [Highcharts]="Highcharts"
+                      [options]="chartOptions_rec"
+                      style="width: 100%; height: 400px; display: block;">
+                    </highcharts-chart>
+                  </div>
+                  <div class="col-md-6">
+                    <highcharts-chart 
+                      [Highcharts]="Highcharts"
+                      [options]="chartOptions_eps"
+                      style="width: 100%; height: 400px; display: block;">
+                    </highcharts-chart>
+                  </div>
+                </div>
+              </div>
+              
+    
+            </mat-tab>
+            
+
+              
+
+            
+          </mat-tab-group>
+          <!-- MATERIAL TABBS ENDS -->
+
+        </div>
+        <div *ngIf="invalidticker" class="container"><div class="alert alert-danger mt-5 text-center" role="alert">No data found, please enter a valid Ticker</div></div>
+        <p *ngIf="error">Error fetching stock information</p>
+  </div>
+  <!-- Footer-->
+  <!-- Remove the container if you want to extend the Footer to full width. -->
+  </div>
+  <footer
+  [class.fixed-bottom]="this.invalidticker || this.isLoading2"
+  class="footer mt-auto clear-top"
+  style="background-color: rgba(0, 0, 0, 0.2)"
+>
+  <div class="text-center p-3">
+    Powered by
+    <a href="https://finnhub.io/">Finnhub.io</a>
+  </div>
+</footer>
+  <!-- End of .container -->
+  <!-- Footer end -->
+  <!-- Bootstrap Bundle with Popper (Replace the version with the specific one you are using, if necessary) -->

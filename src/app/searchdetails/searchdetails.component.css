@@ -1,0 +1,146 @@
+.custom-blue {
+  background-color: #0c1b70;
+}
+
+.text-muted {
+  color: #bebebe !important;
+}
+
+.custom-blue .navbar-brand:hover,
+.custom-blue .nav-link:hover {
+  color: #ffffff !important;
+}
+#search-box{
+  z-index: 0;
+}
+.active {
+  border: 1px solid #FFFFFF;
+  border-radius: 15px;
+  padding: 5px 10px;
+}
+
+/* This class could be used for any text that needs to stay on one line on mobile */
+.single-line-text {
+  font-size: calc(12px + 0.5vw); /* Adjust base size and VW as needed */
+  font-family: 'Open Sans', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.input-group {
+  max-width: 450px;
+  width: 100%;
+  margin: 40px auto;
+}
+
+.input-group-text {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.input-group .form-control {
+  padding-right: 70px;
+  border: 2px solid blue;
+  border-radius: 20px !important;
+}
+
+.bi {
+  color: blue;
+  margin: 0 5px;
+  pointer-events: auto;
+}
+
+.form-control:focus {
+  border-color: blue;
+  box-shadow: none;
+}
+
+.clear-button,
+.search_button {
+  background: transparent;
+  color: blue;
+  border: none;
+}
+
+.custom-toggler {
+  border-color: white;
+}
+
+.card-img-top {
+  width: 120px; /* Adjust as necessary */
+  height: auto;
+  margin-bottom: 10px;
+}
+
+
+
+.mat-tab-group {
+  font-size: 16px;
+}
+
+.mat-tab-label {
+  min-width: 80px;
+  padding: 20px;
+}
+
+.mat-ink-bar {
+  background-color: #673ab7;
+  height: 5px;
+}
+
+/* You can add custom styles for active/inactive tabs as needed */
+.mat-tab-labels .mat-tab-label.mat-tab-label-active {
+  font-weight: bold;
+  color: #673ab7;
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+}
+
+.news-image {
+  width: 120px;
+  height: 70px;
+  object-fit: cover;
+  margin: 1px 16px 1px 1px; /* Adjust spacing as needed */
+}
+
+.news-text {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 16px;
+  word-wrap: break-word; /* Ensure the text goes to the next line */
+}
+
+
+.modal-header {
+  background-color: #f8f9fa; /* or the color that matches your design */
+  border-bottom: 1px solid #dee2e6; /* or the color that matches your design */
+  padding-bottom: 0px;
+  padding-top: 10px;
+}
+
+  
+.modal-footer {
+  border-top: 1px solid #dee2e6; /* or the color that matches your design */
+  justify-content: flex-start; /* Aligns buttons to the left */
+}
+
+
+
+.text-secondary {
+  color: #6c757d; /* Bootstrap's secondary text color */
+}
+.modal-backdrop {
+  --bs-backdrop-zindex: 0 !important;
+  z-index: 0 !important;
+}
+   

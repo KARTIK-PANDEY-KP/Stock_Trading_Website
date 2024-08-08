@@ -1,0 +1,15 @@
+
+runtime: nodejs14
+
+handlers:
+  - url: /(.*\.(gif|png|jpg|css|js|ico|json|svg|woff|woff2|ttf))$
+    static_files: dist/pro3/\1
+    upload: dist/pro3/(.*\.(gif|png|jpg|css|js|ico|json|svg|woff|woff2|ttf))$
+    secure: always
+
+  - url: /.*
+    static_files: dist/pro3/index.html
+    upload: dist/pro3/index.html
+    secure: always
+    http_headers:
+      Strict-Transport-Security: 'max-age=31536000; includeSubDomains'

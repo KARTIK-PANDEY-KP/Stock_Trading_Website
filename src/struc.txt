@@ -1,0 +1,46 @@
+.
+├── app
+│   ├── app.component.css
+│   ├── app.component.html
+│   ├── app.component.spec.ts
+│   ├── app.component.ts
+│   ├── app.config.ts
+│   ├── app.routes.ts
+│   ├── news-modal
+│   │   ├── news-modal.component.css
+│   │   ├── news-modal.component.html
+│   │   ├── news-modal.component.spec.ts
+│   │   └── news-modal.component.ts
+│   ├── portfolio
+│   │   ├── portfolio.component.css
+│   │   ├── portfolio.component.html
+│   │   ├── portfolio.component.spec.ts
+│   │   └── portfolio.component.ts
+│   ├── search
+│   │   ├── search.component.css
+│   │   ├── search.component.html
+│   │   ├── search.component.spec.ts
+│   │   └── search.component.ts
+│   ├── searchdetails
+│   │   ├── searchdetails.component.css
+│   │   ├── searchdetails.component.html
+│   │   ├── searchdetails.component.spec.ts
+│   │   └── searchdetails.component.ts
+│   ├── test
+│   │   ├── test.component.css
+│   │   ├── test.component.html
+│   │   ├── test.component.spec.ts
+│   │   └── test.component.ts
+│   └── watchlist
+│       ├── watchlist.component.css
+│       ├── watchlist.component.html
+│       ├── watchlist.component.spec.ts
+│       └── watchlist.component.ts
+├── assets
+├── favicon.ico
+├── index.html
+├── main.ts
+├── struc.txt
+└── styles.css
+
+8 directories, 35 files

@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg custom-blue">
+    <div class="container-fluid navbar-dark">
+        <span class="navbar-brand text-white navbar-dark" href="#">Stock Search</span>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon navbar-dark"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item me-3">
+                <a class="nav-link text-white" routerLink="">Search</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link text-white active" routerLink="/watchlist">Watchlist</a>
+            </li>
+            <li class="nav-item me-5">
+                <a class="nav-link text-white" routerLink="/portfolio">Portfolio</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
+    <div class="static_data">
+        <div class="container mt-4">
+            <p class="text_body">My Watchlist</p>
+            <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center mt-4">
+                <mat-progress-spinner diameter="60" mode="indeterminate"></mat-progress-spinner>
+              </div>
+              
+              <div *ngIf="!isLoading">
+                    <div *ngIf="this.Watchlist_empty" class="empty-watchlist-message rounded">
+                      Currently, you don't have any stock in your watchlist.
+                    </div>
+                    <!-- Here would be your code to display stocks if the watchlist is not empty -->
+                  
+              
+            <div *ngFor="let stock of watchlist; let i = index" class="stock-item me-6">
+    <div class="stock-remove stock-info">
+        <button type="button" class="btn-remove" (click)="removeFromWatchlist(stock.stock_ticker, i)">
+            &times;
+        </button>
+        <div class="ticker"><h3>{{ stock.stock_ticker }}</h3></div>
+        <div class="company-name"><h6>{{stock.stock_company_name }}</h6></div>
+    </div>
+    <div class="stock-price" [ngClass]="{'positive': stock.quote.d >= 0, 'negative': stock.quote.d < 0}">
+        <div class="current-price">{{ stock.quote?.c }}</div>
+        <div class="price-change me-6">
+            <span *ngIf="stock.quote.d >= 0" class="price-up"></span>
+            <span *ngIf="stock.quote.d < 0" class="price-down"></span>
+            {{ stock.quote?.d }} ({{ stock.quote?.dp }}%)
+        </div>
+    </div>
+</div>
+</div>
+
+            
+            </div>
+        </div>
+    
+        
+    
+  <!-- Footer-->
+  <!-- Remove the container if you want to extend the Footer to full width. -->
+  <div class="container my-5">
+  <!-- Footer -->
+      <footer
+              class="text-center text-lg-start text-dark fixed-bottom"
+              style="background-color: #eceff100"
+              >
+      <!-- Copyright -->
+      <div
+          class="text-center p-3"
+          style="background-color: rgba(0, 0, 0, 0.2)"
+          >    
+          Powered by
+          <a href="https://finnhub.io/"
+          >Finnhub.io</a
+          >
+      </div>
+      <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+  </div>
+  <!-- End of .container -->
+  <!-- Footer end -->
+  <!-- Bootstrap Bundle with Popper (Replace the version with the specific one you are using, if necessary) -->

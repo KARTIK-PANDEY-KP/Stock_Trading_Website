@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-lg custom-blue">
+    <div class="container-fluid navbar-dark">
+        <span class="navbar-brand text-white navbar-dark" href="#">Stock Search</span>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item  me-3">
+            <a class="nav-link text-white active text-muted" aria-current="page" routerLink="/search/home/">Search</a>
+            </li>
+            <li class="nav-item  me-3">
+            <a class="nav-link text-white text-muted" routerLink="/watchlist">Watchlist</a>
+            </li>
+            <li class="nav-item  me-5">
+            <a class="nav-link text-white text-muted" routerLink="/portfolio">Portfolio</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
+    <div class = "static_data">
+        <div class="text col text-center mx-auto mt-5">
+            <p class="text_body fs-1">STOCK SEARCH</p>
+        </div>
+    <!-- TODO: bootstrap form -->
+  <div class="container mt-5">
+      <div class="position-relative">
+          <form action="/submit/"  name="form" class="form_1" method="get" (ngSubmit)="onSubmit($event)">
+          <div class="input-group">
+              <input type="text" name="text" class="form-control" placeholder="Enter stock ticker symbol" aria-label="Stock ticker" id="search-box" matInput [formControl]="myControl" [matAutocomplete]="auto" required>
+              <mat-autocomplete class = "autocomp" #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                <mat-option *ngIf="isLoading">
+                <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                </mat-option>
+                @for (option of filteredOptions | async; track option) {
+                  <mat-option [value]="option"  *ngIf="!isLoading && stop">{{option}}</mat-option>
+                }
+              </mat-autocomplete>
+              <span class="input-group-text">
+              <button type="submit" class="bi search_button bi-search"></button>
+              <button type="reset" (click)="resetAutocomplete()" class="bi bi-x-lg clear-button cancel"></button>
+              </span>
+          </div>
+          </form>
+      </div>
+  </div>
+  
+    <!-- -------------------- TODO:[innerHTML]="dynamicContent"  -->
+  </div>
+  <!-- all the changes-->
+  <div class="dynamic_div">
+      <div *ngIf="contentrender" class="container my-5">
+          <div class="card-group">
+            <!-- First Card -->
+            <div class="card text-center border-0">
+              <div class="card-body">
+                  <h5 class="card-title h1">
+                      AAPL
+                      <i id="star-icon" class="bi bi-star fs-4 position-absolute" style="cursor: pointer; color: black;" (click)="toggleStar($event)">
+                      </i>
+                  </h5>
+                <p class="card-text h4">Apple Inc</p>
+                <p class="card-text"><small class="text-muted">NASDAQ NMS - GLOBAL MARKET</small></p>
+                <a href="#" class="btn btn-success">Buy</a>
+              </div>
+            </div>
+            <!-- Second Card -->
+            <div class="card border-0">
+              <img src="https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png" class="card-img-top" alt="Apple Logo" style="width: 100px; margin: auto;">
+              <div class="card-body mt-1">
+                <p class="card-text text-center mt-5"><small class="text-success h6">Market is Open</small></p>
+              </div>
+            </div>
+            <!-- Third Card -->
+            <div class="card text-center text-success border-0">
+              <div class="card-body">
+                <h5 class="card-title h1">184.11</h5>
+                <p class="card-text h4">+1.79 (0.98%)</p>
+                <p class="card-text"><small class="text-muted">2024-02-22 10:53:25</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="invalidticker" class="container"><div class="alert alert-danger mt-5 text-center" role="alert">No data found, please enter a valid Ticker</div></div>
+        <p *ngIf="error">Error fetching stock information</p>
+  </div>
+  <!-- Footer-->
+  <!-- Remove the container if you want to extend the Footer to full width. -->
+  <div class="container my-5">
+  <!-- Footer -->
+      <footer
+              class="text-center text-lg-start text-dark fixed-bottom"
+              style="background-color: #eceff100"
+              >
+      <!-- Copyright -->
+      <div
+          class="text-center p-3"
+          style="background-color: rgba(0, 0, 0, 0.2)"
+          >    
+          Powered by
+          <a href="https://finnhub.io/"
+          >Finnhub.io</a
+          >
+      </div>
+      <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+  </div>
+  <!-- End of .container -->
+  <!-- Footer end -->
+  <!-- Bootstrap Bundle with Popper (Replace the version with the specific one you are using, if necessary) -->

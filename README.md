@@ -92,6 +92,7 @@ This project is a comprehensive web application that allows users to search for 
 
 4. **Start the server**:
    ```bash
+   cd NODE_SERVER
    npm start
    ```
 

@@ -83,7 +83,7 @@ This project is a comprehensive web application that allows users to search for 
    ```
 
 3. **Set up environment variables**:
-   - Add your API keys and other configurations IN THE SERVER FILE
+   - Add your API keys and other configurations in the index.js file(in NODE_SERVER folder)
      ```env
      FINNHUB_API_KEY=your_finnhub_api_key
      POLYGON_API_KEY=your_polygon_api_key
